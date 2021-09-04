@@ -1,0 +1,20 @@
+nav {
+  width: 90%;
+  .navbar-brand {
+    color: #4ab82e;
+  }
+
+  button:focus {
+    box-shadow: none !important;
+  }
+
+  .nav-item {
+    margin: 10px auto;
+    a {
+      color: black;
+      font-weight: 500;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+  }
+}
