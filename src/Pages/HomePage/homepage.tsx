@@ -1,8 +1,9 @@
+
 import axios from 'axios';
 import './homepage_styles.scss';
 import React, { useEffect, useMemo, useState } from 'react';
 
-interface IProductArray {
+interface IProductObject {
   id: number | undefined;
   title: string | undefined;
   price: number | undefined;
@@ -12,13 +13,13 @@ interface IProductArray {
 }
 
 const Home: React.FC = () => {
-  let [products, setProducts] = useState<Array<IProductArray | undefined>>([]);
-  let ProductsContext = React.createContext<Array<IProductArray | undefined>>(
+  let [products, setProducts] = useState<IProductObject[]>([]);
+  let ProductsContext = React.createContext<IProductObject[]>(
     []
   );
 
   useEffect(() => {
-    const fetchData = async (): Promise<any> => {
+    const fetchData = async (): Promise<void> => {
       try {
         let results = await axios.get(
           'https://fakestoreapi.com/products?limit=20'
@@ -30,13 +31,17 @@ const Home: React.FC = () => {
       }
     };
 
-    // Call Fetch
     fetchData();
   }, [setProducts]);
 
-  const filterData = (products: any): Array<IProductArray> => {
+  /**
+   * @function filterData goes through array of products adn filters products with prices < 30.00
+   * @param products takes in Array of objects with IProductObject interface
+   * @returns null | filtered array of products with prices < 30.00
+   */
+  const filterData = (products : IProductObject[]): IProductObject[] => {
     return products
-      ?.filter((item: IProductArray) => {
+      ?.filter((item: IProductObject) => {
         if (item?.price) {
           return item.price <= 30.0;
         }
@@ -45,8 +50,12 @@ const Home: React.FC = () => {
       .splice(0, 5);
   };
 
-  // Caches deals to avoid constant filters every re-render
-  const filteredDeals: Array<IProductArray | null> = useMemo(
+  /**
+   * Since array of products will always be the same products && same order
+   * useMemo will cache the filtered products to prevent filterData() from running on every render
+   * Will only call filterData() when the state of products changes
+   */
+  const filteredDeals: IProductObject[] = useMemo(
     () => filterData(products),
     [products]
   );
