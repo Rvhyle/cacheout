@@ -1,10 +1,14 @@
-import { Home } from './Pages/pages';
+import { Home, MensPage } from './Pages/pages';
 import { Navbar } from './Components/components';
+import { Switch, Route } from 'react-router-dom';
 function App() {
   return (
     <div>
       <Navbar />
-      <Home />
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route exact path='/mens' component={MensPage} />
+      </Switch>
     </div>
   );
 }

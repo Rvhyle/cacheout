@@ -2,6 +2,11 @@ nav {
   width: 90%;
   .navbar-brand {
     color: #4ab82e;
+    text-decoration: none;
+  }
+
+  .link {
+    text-decoration: none;
   }
 
   button:focus {

@@ -1,27 +1,12 @@
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './homepage_styles.scss';
-import React, { useEffect, useMemo, useState } from 'react';
 import { Loading } from '../../Components/components';
-
-interface IProductObject {
-  id: number | undefined;
-  title: string | undefined;
-  price: number | undefined;
-  category: string | undefined;
-  description: string | undefined;
-  image: string | undefined;
-}
-
-interface IFilteredProducts {
-  dealFilter: IProductObject[];
-  techFilter: IProductObject[];
-  jeweleryFilter: IProductObject[];
-}
+import { IFilteredProducts, IProductObject } from '../../Models/Interfaces';
 
 const Home: React.FC = () => {
   let [products, setProducts] = useState<IProductObject[]>([]);
   let [fetching, setFetching] = useState<Boolean>(true);
-  let ProductsContext = React.createContext<IProductObject[]>([]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -84,15 +69,9 @@ const Home: React.FC = () => {
     };
   };
 
-  /**
-   * Since array of products will always be the same products && same order
-   * useMemo will cache the filtered products to prevent filterData() from running on every render
-   * Will only call filterData() when the state of products changes
-   */
-  const filteredDeals: IFilteredProducts = useMemo(
-    () => filterData(products),
-    [products]
-  );
+  const filteredDeals: IFilteredProducts = filterData(products);
+
+  console.log(products);
 
   if (fetching) {
     return (
@@ -103,101 +82,99 @@ const Home: React.FC = () => {
   }
 
   return (
-    <ProductsContext.Provider value={products}>
-      <div className='home-container mx-auto'>
-        <div className='featured'>
-          {products?.slice(0, 3).map((product, index) => {
+    <div className='home-container mx-auto'>
+      <div className='featured'>
+        {products?.slice(0, 3).map((product, index) => {
+          return (
+            <div
+              key={product?.id}
+              className={`grid-item feat-item feat-${index}`}
+            >
+              <a href='/'>
+                <img
+                  className='product-image'
+                  src={product?.image}
+                  alt={product?.title}
+                />
+                <div className='product-info pb-3 ps-3'>
+                  <h1>{product?.title}</h1>
+                  <h2>${product?.price}</h2>
+                </div>
+              </a>
+            </div>
+          );
+        })}
+      </div>
+      {/* Links To 3 categories */}
+      <div className='link-container my-5 d-flex gap-4 justify-content-evenly flex-wrap align-items-center'>
+        <div className='category-link'>
+          <a href='/'>Tech Wonderland</a>
+        </div>
+        <div className='category-link'>
+          <a href='/'>Mens Clothing</a>
+        </div>
+        <div className='category-link'>
+          <a href='/'>Womens Clothing</a>
+        </div>
+      </div>
+      {/* Deals */}
+      <div className='homepage_showcase-container'>
+        <h1 className='showcase-title'>Deals Under $30</h1>
+        <div className='showcase d-flex justify-content-center gap-5 flex-wrap'>
+          {filteredDeals.dealFilter.map((product) => {
             return (
-              <div
-                key={product?.id}
-                className={`grid-item feat-item feat-${index}`}
-              >
+              <div key={product?.id} className='showcase-items'>
                 <a href='/'>
                   <img
                     className='product-image'
                     src={product?.image}
                     alt={product?.title}
                   />
-                  <div className='product-info pb-3 ps-3'>
-                    <h1>{product?.title}</h1>
-                    <h2>${product?.price}</h2>
-                  </div>
                 </a>
               </div>
             );
           })}
         </div>
-        {/* Links To 3 categories */}
-        <div className='link-container my-5 d-flex gap-4 justify-content-evenly flex-wrap align-items-center'>
-          <div className='category-link'>
-            <a href='/'>Tech Wonderland</a>
-          </div>
-          <div className='category-link'>
-            <a href='/'>Mens Clothing</a>
-          </div>
-          <div className='category-link'>
-            <a href='/'>Womens Clothing</a>
-          </div>
-        </div>
-        {/* Deals */}
-        <div className='homepage_showcase-container'>
-          <h1 className='showcase-title'>Deals Under $30</h1>
-          <div className='showcase d-flex justify-content-center gap-5 flex-wrap'>
-            {filteredDeals.dealFilter.map((product) => {
-              return (
-                <div key={product?.id} className='showcase-items'>
-                  <a href='/'>
-                    <img
-                      className='product-image'
-                      src={product?.image}
-                      alt={product?.title}
-                    />
-                  </a>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        {/* Tech */}
-        <div className='homepage_showcase-container'>
-          <h1 className='showcase-title'>Gear up for School</h1>
-          <div className='showcase d-flex justify-content-center gap-5 flex-wrap'>
-            {filteredDeals.techFilter.map((product) => {
-              return (
-                <div key={product?.id} className='showcase-items'>
-                  <a href='/'>
-                    <img
-                      className='product-image'
-                      src={product?.image}
-                      alt={product?.title}
-                    />
-                  </a>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        {/* Jewelery */}
-        <div className='homepage_showcase-container'>
-          <h1 className='showcase-title'>Here's one way to apologize</h1>
-          <div className='showcase d-flex justify-content-center gap-5 flex-wrap'>
-            {filteredDeals.jeweleryFilter.map((product) => {
-              return (
-                <div key={product?.id} className='showcase-items'>
-                  <a href='/'>
-                    <img
-                      className='product-image'
-                      src={product?.image}
-                      alt={product?.title}
-                    />
-                  </a>
-                </div>
-              );
-            })}
-          </div>
+      </div>
+      {/* Tech */}
+      <div className='homepage_showcase-container'>
+        <h1 className='showcase-title'>Gear up for School</h1>
+        <div className='showcase d-flex justify-content-center gap-5 flex-wrap'>
+          {filteredDeals.techFilter.map((product) => {
+            return (
+              <div key={product?.id} className='showcase-items'>
+                <a href='/'>
+                  <img
+                    className='product-image'
+                    src={product?.image}
+                    alt={product?.title}
+                  />
+                </a>
+              </div>
+            );
+          })}
         </div>
       </div>
-    </ProductsContext.Provider>
+      {/* Jewelery */}
+      <div className='homepage_showcase-container'>
+        <h1 className='showcase-title'>Here's one way to apologize</h1>
+        <div className='showcase d-flex justify-content-center gap-5 flex-wrap'>
+          {filteredDeals.jeweleryFilter.map((product) => {
+            return (
+              <div key={product?.id} className='showcase-items'>
+                <a href='/'>
+                  <img
+                    className='product-image'
+                    src={product?.image}
+                    alt={product?.title}
+                  />
+                </a>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 };
 

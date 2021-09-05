@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import './navbar_styles.scss';
@@ -7,9 +8,9 @@ const Navbar: React.FC = () => {
   return (
     <nav className='navbar mx-auto navbar-expand-lg'>
       <div className='container-fluid'>
-        <a className='navbar-brand fw-bold' href='/'>
+        <Link className='link navbar-brand fw-bold' to='/'>
           CacheOut
-        </a>
+        </Link>
         {/* toggler */}
         <button
           className='navbar-toggler'
@@ -24,7 +25,7 @@ const Navbar: React.FC = () => {
         <div className='collapse navbar-collapse' id='navbarSupportedContent'>
           <ul className='navbar-nav mx-auto'>
             <li className='nav-item px-md-4'>
-              <a href='/'>Men</a>
+              <Link to='/mens'>Mens</Link>
             </li>
             <li className='nav-item px-md-4'>
               <a href='/'>Women</a>
