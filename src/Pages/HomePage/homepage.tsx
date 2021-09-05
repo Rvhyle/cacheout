@@ -1,7 +1,7 @@
-
 import axios from 'axios';
 import './homepage_styles.scss';
 import React, { useEffect, useMemo, useState } from 'react';
+import { Loading } from '../../Components/components';
 
 interface IProductObject {
   id: number | undefined;
@@ -12,11 +12,16 @@ interface IProductObject {
   image: string | undefined;
 }
 
+interface IFilteredProducts {
+  dealFilter: IProductObject[];
+  techFilter: IProductObject[];
+  jeweleryFilter: IProductObject[];
+}
+
 const Home: React.FC = () => {
   let [products, setProducts] = useState<IProductObject[]>([]);
-  let ProductsContext = React.createContext<IProductObject[]>(
-    []
-  );
+  let [fetching, setFetching] = useState<Boolean>(true);
+  let ProductsContext = React.createContext<IProductObject[]>([]);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -26,21 +31,23 @@ const Home: React.FC = () => {
         );
 
         setProducts(results.data);
+        setFetching(false);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchData();
-  }, [setProducts]);
+  }, [setFetching]);
 
   /**
-   * @function filterData goes through array of products adn filters products with prices < 30.00
+   * @function filterData goes through array of products && filters products
    * @param products takes in Array of objects with IProductObject interface
-   * @returns null | filtered array of products with prices < 30.00
+   * @returns null | Object containing properties with IProductObject[]
    */
-  const filterData = (products : IProductObject[]): IProductObject[] => {
-    return products
+  const filterData = (products: IProductObject[]): IFilteredProducts => {
+    // Deals under 30
+    let filteredDeals: IProductObject[] = products
       ?.filter((item: IProductObject) => {
         if (item?.price) {
           return item.price <= 30.0;
@@ -48,6 +55,33 @@ const Home: React.FC = () => {
         return null;
       })
       .splice(0, 5);
+
+    // Tech
+    let filteredTech: IProductObject[] = products
+      ?.filter((item: IProductObject) => {
+        if (item?.price) {
+          return item.category === 'electronics';
+        }
+        return null;
+      })
+      .splice(0, 5);
+
+    // Jewelery
+    let filteredJewelery: IProductObject[] = products
+      ?.filter((item: IProductObject) => {
+        if (item?.price) {
+          return item.category === 'jewelery';
+        }
+        return null;
+      })
+      .splice(0, 5);
+
+    // Return Object with IFilteredProducts interface
+    return {
+      dealFilter: filteredDeals,
+      techFilter: filteredTech,
+      jeweleryFilter: filteredJewelery,
+    };
   };
 
   /**
@@ -55,10 +89,18 @@ const Home: React.FC = () => {
    * useMemo will cache the filtered products to prevent filterData() from running on every render
    * Will only call filterData() when the state of products changes
    */
-  const filteredDeals: IProductObject[] = useMemo(
+  const filteredDeals: IFilteredProducts = useMemo(
     () => filterData(products),
     [products]
   );
+
+  if (fetching) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <ProductsContext.Provider value={products}>
@@ -98,12 +140,50 @@ const Home: React.FC = () => {
           </div>
         </div>
         {/* Deals */}
-        <div className='deals-container'>
-          <h1 id='deals-title'>Deals Under $30</h1>
-          <div className='deals d-flex justify-content-center gap-5 flex-wrap'>
-            {filteredDeals.map((product) => {
+        <div className='homepage_showcase-container'>
+          <h1 className='showcase-title'>Deals Under $30</h1>
+          <div className='showcase d-flex justify-content-center gap-5 flex-wrap'>
+            {filteredDeals.dealFilter.map((product) => {
               return (
-                <div key={product?.id} className='deal-items'>
+                <div key={product?.id} className='showcase-items'>
+                  <a href='/'>
+                    <img
+                      className='product-image'
+                      src={product?.image}
+                      alt={product?.title}
+                    />
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {/* Tech */}
+        <div className='homepage_showcase-container'>
+          <h1 className='showcase-title'>Gear up for School</h1>
+          <div className='showcase d-flex justify-content-center gap-5 flex-wrap'>
+            {filteredDeals.techFilter.map((product) => {
+              return (
+                <div key={product?.id} className='showcase-items'>
+                  <a href='/'>
+                    <img
+                      className='product-image'
+                      src={product?.image}
+                      alt={product?.title}
+                    />
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {/* Jewelery */}
+        <div className='homepage_showcase-container'>
+          <h1 className='showcase-title'>Here's one way to apologize</h1>
+          <div className='showcase d-flex justify-content-center gap-5 flex-wrap'>
+            {filteredDeals.jeweleryFilter.map((product) => {
+              return (
+                <div key={product?.id} className='showcase-items'>
                   <a href='/'>
                     <img
                       className='product-image'

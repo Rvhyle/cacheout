@@ -17,6 +17,7 @@
     .feat-item {
       position: relative;
       border: 1px solid black;
+      background-color: white;
 
       a {
         color: black;
@@ -65,17 +66,20 @@
   }
 
   // Deals Container
-  .deals-container {
-    #deals-title {
-      padding: 25px 0px;
+  .homepage_showcase-container {
+    background-color: white;
+    margin-bottom: 2rem;
+    padding: 10px;
+    .showcase-title {
+      padding: 25px 15px;
+      font-size: 1.5rem;
     }
-    .deals {
-      .deal-items {
+    .showcase {
+      .showcase-items {
         position: relative;
         width: 300px;
         max-width: 100%;
         height: 300px;
-        border: 1px solid black;
       }
     }
   }
