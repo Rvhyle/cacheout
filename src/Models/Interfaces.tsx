@@ -13,7 +13,9 @@ export interface IFilteredProducts {
   jeweleryFilter: IProductObject[];
 }
 
-export type CatState = {
-  products: IProductObject[];
-  fetching: Boolean;
-};
+export enum Category {
+  Men = "men's%20clothing",
+  Women = "women's%20clothing",
+  Jewelery = 'jewelery',
+  Electronics = 'electronics',
+}

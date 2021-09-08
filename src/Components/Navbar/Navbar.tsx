@@ -25,16 +25,16 @@ const Navbar: React.FC = () => {
         <div className='collapse navbar-collapse' id='navbarSupportedContent'>
           <ul className='navbar-nav mx-auto'>
             <li className='nav-item px-md-4'>
-              <Link to='/mens'>Mens</Link>
+              <Link to='/category/mens'>Mens</Link>
             </li>
             <li className='nav-item px-md-4'>
-              <a href='/'>Women</a>
+              <Link to='/category/womens'>Women's</Link>
             </li>
             <li className='nav-item px-md-4'>
-              <a href='/'>Tech</a>
+              <Link to='/category/tech'>Tech</Link>
             </li>
             <li className='nav-item px-md-4'>
-              <a href='/'>Jewelry</a>
+              <Link to='/category/jewelery'>Jewelery</Link>
             </li>
           </ul>
           <div className='cart d-flex justify-content-center'>

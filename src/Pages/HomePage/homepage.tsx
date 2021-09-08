@@ -4,7 +4,7 @@ import './homepage_styles.scss';
 import { Loading } from '../../Components/components';
 import { IFilteredProducts, IProductObject } from '../../Models/Interfaces';
 
-const Home: React.FC = () => {
+const Home: React.FunctionComponent = () => {
   let [products, setProducts] = useState<IProductObject[]>([]);
   let [fetching, setFetching] = useState<Boolean>(true);
 
@@ -70,8 +70,6 @@ const Home: React.FC = () => {
   };
 
   const filteredDeals: IFilteredProducts = filterData(products);
-
-  console.log(products);
 
   if (fetching) {
     return (
