@@ -1,29 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './homepage_styles.scss';
 import { Loading } from '../../Components/components';
 import { IFilteredProducts, IProductObject } from '../../Models/Interfaces';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../Redux/store';
 
-const Home: React.FunctionComponent = () => {
-  let [products, setProducts] = useState<IProductObject[]>([]);
-  let [fetching, setFetching] = useState<Boolean>(true);
-
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        let results = await axios.get(
-          'https://fakestoreapi.com/products?limit=20'
-        );
-
-        setProducts(results.data);
-        setFetching(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, [setFetching]);
+const Home: React.FunctionComponent = (): JSX.Element => {
+  const { allProducts, loadingData } = useSelector((state: RootState) => state.products);
 
   /**
    * @function filterData goes through array of products && filters products
@@ -44,7 +28,7 @@ const Home: React.FunctionComponent = () => {
     // Tech
     let filteredTech: IProductObject[] = products
       ?.filter((item: IProductObject) => {
-        if (item?.price) {
+        if (item?.category) {
           return item.category === 'electronics';
         }
         return null;
@@ -54,7 +38,7 @@ const Home: React.FunctionComponent = () => {
     // Jewelery
     let filteredJewelery: IProductObject[] = products
       ?.filter((item: IProductObject) => {
-        if (item?.price) {
+        if (item?.category) {
           return item.category === 'jewelery';
         }
         return null;
@@ -69,31 +53,20 @@ const Home: React.FunctionComponent = () => {
     };
   };
 
-  const filteredDeals: IFilteredProducts = filterData(products);
+  const filteredDeals: IFilteredProducts = filterData(allProducts);
 
-  if (fetching) {
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
+  if (loadingData) {
+    return <Loading />;
   }
 
   return (
     <div className='home-container mx-auto'>
       <div className='featured'>
-        {products?.slice(0, 3).map((product, index) => {
+        {allProducts?.slice(0, 3).map((product: IProductObject, index: number) => {
           return (
-            <div
-              key={product?.id}
-              className={`grid-item feat-item feat-${index}`}
-            >
+            <div key={product?.id} className={`grid-item feat-item feat-${index}`}>
               <a href='/'>
-                <img
-                  className='product-image'
-                  src={product?.image}
-                  alt={product?.title}
-                />
+                <img className='product-image' src={product?.image} alt={product?.title} />
                 <div className='product-info pb-3 ps-3'>
                   <h1>{product?.title}</h1>
                   <h2>${product?.price}</h2>
@@ -105,15 +78,15 @@ const Home: React.FunctionComponent = () => {
       </div>
       {/* Links To 3 categories */}
       <div className='link-container my-5 d-flex gap-4 justify-content-evenly flex-wrap align-items-center'>
-        <div className='category-link'>
-          <a href='/'>Tech Wonderland</a>
-        </div>
-        <div className='category-link'>
-          <a href='/'>Mens Clothing</a>
-        </div>
-        <div className='category-link'>
-          <a href='/'>Womens Clothing</a>
-        </div>
+        <Link className='category-link' to='/category/tech'>
+          Tech Wonderland
+        </Link>
+        <Link className='category-link' to='/category/mens'>
+          Men's Clothing
+        </Link>
+        <Link className='category-link' to='/category/womens'>
+          Women's Clothing
+        </Link>
       </div>
       {/* Deals */}
       <div className='homepage_showcase-container'>
@@ -123,11 +96,7 @@ const Home: React.FunctionComponent = () => {
             return (
               <div key={product?.id} className='showcase-items'>
                 <a href='/'>
-                  <img
-                    className='product-image'
-                    src={product?.image}
-                    alt={product?.title}
-                  />
+                  <img className='product-image' src={product?.image} alt={product?.title} />
                 </a>
               </div>
             );
@@ -142,11 +111,7 @@ const Home: React.FunctionComponent = () => {
             return (
               <div key={product?.id} className='showcase-items'>
                 <a href='/'>
-                  <img
-                    className='product-image'
-                    src={product?.image}
-                    alt={product?.title}
-                  />
+                  <img className='product-image' src={product?.image} alt={product?.title} />
                 </a>
               </div>
             );
@@ -161,11 +126,7 @@ const Home: React.FunctionComponent = () => {
             return (
               <div key={product?.id} className='showcase-items'>
                 <a href='/'>
-                  <img
-                    className='product-image'
-                    src={product?.image}
-                    alt={product?.title}
-                  />
+                  <img className='product-image' src={product?.image} alt={product?.title} />
                 </a>
               </div>
             );

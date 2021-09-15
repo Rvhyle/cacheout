@@ -4,12 +4,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import './navbar_styles.scss';
 
-const Navbar: React.FC = () => {
+const Navbar: React.FunctionComponent = (): JSX.Element => {
   return (
     <nav className='navbar mx-auto navbar-expand-lg'>
       <div className='container-fluid'>
         <Link className='link navbar-brand fw-bold' to='/'>
-          CacheOut
+          Cache<span>Out</span>
         </Link>
         {/* toggler */}
         <button

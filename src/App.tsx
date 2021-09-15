@@ -1,14 +1,18 @@
-import {
-  Home,
-  JeweleryPage,
-  MensPage,
-  TechPage,
-  WomensPage,
-} from './Pages/pages';
+import { Home, JeweleryPage, MensPage, TechPage, WomensPage } from './Pages/pages';
 
 import { Navbar } from './Components/components';
 import { Switch, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchProducts } from './Redux/features/allProducts/productSlice';
+
 const App: React.FunctionComponent = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
+
   return (
     <div>
       <Navbar />
