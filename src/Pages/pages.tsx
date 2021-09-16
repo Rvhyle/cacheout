@@ -1,4 +1,5 @@
 export { default as Home } from './HomePage/homepage';
+export { default as ProductPage } from './ProductPage/productpage';
 export { default as MensPage } from './CategoryPages/menspage';
 export { default as WomensPage } from './CategoryPages/womenspage';
 export { default as TechPage } from './CategoryPages/techpage';

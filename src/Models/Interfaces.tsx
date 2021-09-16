@@ -32,3 +32,7 @@ export interface IProductStoreState {
   jeweleryProducts: IProductObject[];
   loadingData: Boolean;
 }
+
+export interface routeParamTypes {
+  id: string;
+}

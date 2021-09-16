@@ -1,8 +1,6 @@
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { IProductObject } from '../../Models/Interfaces';
-import { fetchProducts } from '../../Redux/features/allProducts/productSlice';
 import { RootState } from '../../Redux/store';
 import { Loading } from '../components';
 import './categoryrender_styles.scss';
@@ -34,10 +32,14 @@ const RenderCategory: React.FunctionComponent<{
               key={product.id}
             >
               <div className='img-container'>
-                <img className='product-img' src={product.image} alt={product.title} />
+                <Link to={`/category/${product.category}/${product.id}`}>
+                  <img className='product-img' src={product.image} alt={product.title} />
+                </Link>
               </div>
               <div className='product-content'>
-                <h1 className='product-title'>{product.title}</h1>
+                <Link to={`/category/${product.category}/${product.id}`}>
+                  <h1 className='product-title'>{product.title}</h1>
+                </Link>
                 <span className='product-rating'>{product.rating.rate} / 10</span>
                 <p className='product-description'>{product.description}</p>
                 <h2 className='product-price'>${product.price}</h2>

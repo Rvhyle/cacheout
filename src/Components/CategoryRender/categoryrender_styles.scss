@@ -1,5 +1,12 @@
 .category-container {
   width: 90%;
+
+  a {
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+  }
+
   .product {
     background-color: white;
     width: 100%;

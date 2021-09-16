@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './homepage_styles.scss';
 import { Loading } from '../../Components/components';
@@ -65,13 +64,13 @@ const Home: React.FunctionComponent = (): JSX.Element => {
         {allProducts?.slice(0, 3).map((product: IProductObject, index: number) => {
           return (
             <div key={product?.id} className={`grid-item feat-item feat-${index}`}>
-              <a href='/'>
+              <Link to={`/category/${product.category}/${product.id}`}>
                 <img className='product-image' src={product?.image} alt={product?.title} />
                 <div className='product-info pb-3 ps-3'>
                   <h1>{product?.title}</h1>
                   <h2>${product?.price}</h2>
                 </div>
-              </a>
+              </Link>
             </div>
           );
         })}
@@ -95,9 +94,9 @@ const Home: React.FunctionComponent = (): JSX.Element => {
           {filteredDeals.dealFilter.map((product) => {
             return (
               <div key={product?.id} className='showcase-items'>
-                <a href='/'>
+                <Link to={`/category/${product.category}/${product.id}`}>
                   <img className='product-image' src={product?.image} alt={product?.title} />
-                </a>
+                </Link>
               </div>
             );
           })}
@@ -110,9 +109,9 @@ const Home: React.FunctionComponent = (): JSX.Element => {
           {filteredDeals.techFilter.map((product) => {
             return (
               <div key={product?.id} className='showcase-items'>
-                <a href='/'>
+                <Link to={`/category/${product.category}/${product.id}`}>
                   <img className='product-image' src={product?.image} alt={product?.title} />
-                </a>
+                </Link>
               </div>
             );
           })}
@@ -125,9 +124,9 @@ const Home: React.FunctionComponent = (): JSX.Element => {
           {filteredDeals.jeweleryFilter.map((product) => {
             return (
               <div key={product?.id} className='showcase-items'>
-                <a href='/'>
+                <Link to={`/category/${product.category}/${product.id}`}>
                   <img className='product-image' src={product?.image} alt={product?.title} />
-                </a>
+                </Link>
               </div>
             );
           })}
